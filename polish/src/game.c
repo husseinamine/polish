@@ -1,10 +1,9 @@
 #include <stdio.h>
-#include <SDL.h>
-#include <SDL_image.h>
+#include "engine.h"
 
 int main(int argc, char* argv[])
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-	IMG_Init(IMG_INIT_PNG);
-	return 0;
+	PolishEngine_Init("Polish v0.1", 800, 600);
+
+	while (1) {};
 }
