@@ -18,22 +18,20 @@ int PolishEngine_Init(char* title, unsigned int width, unsigned int height)
 	if (game.window == NULL)
 	{
 		printf("something went wrong while creating SDL Window... %s", SDL_GetError());
-
-
-
-		game.renderer = SDL_CreateRenderer(game.window, -1, SDL_RENDERER_ACCELERATED);
-
-		if (game.renderer == NULL)
-		{
-			printf("something went wrong while creating SDL Renderer... %s", SDL_GetError());
-		}
-
-
-		if ((err != 0) && (game.window != NULL) && (game.renderer != NULL))
-		{
-			return -1;
-		}
-
-		return 0;
 	}
+
+	game.renderer = SDL_CreateRenderer(game.window, -1, SDL_RENDERER_ACCELERATED);
+
+	if (game.renderer == NULL)
+	{
+		printf("something went wrong while creating SDL Renderer... %s", SDL_GetError());
+	}
+
+
+	if ((err != 0) && (game.window != NULL) && (game.renderer != NULL))
+	{
+		return -1;
+	}
+
+	return 0;
 }

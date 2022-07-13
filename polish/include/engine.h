@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdio.h>
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 typedef struct Game {
 	SDL_Window* window;
