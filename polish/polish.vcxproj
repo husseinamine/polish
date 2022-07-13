@@ -74,6 +74,7 @@
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>C:\Users\user\Development\polish\polish\lib;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\Users\user\Development\polish\polish\include;$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\tools\libsdl\include;$(IncludePath)</IncludePath>
