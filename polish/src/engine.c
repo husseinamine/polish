@@ -89,6 +89,7 @@ Uint32 PolishEngine_GetMouse(int index, int *x, int *y)
 			break;
 
 		default:
+			return 0;
 			break;
 	}
 }

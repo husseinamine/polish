@@ -1,27 +1,13 @@
-#include <stdio.h>
-#include "engine.h"
+#include "game.h"
 
-int main(int argc, char* argv[])
+void update()
 {
-	int running = 1;
+}
 
-	int err = PolishEngine_Init("Polish v0.1", 800, 600);
+void fixed_update()
+{
+}
 
-	if (err)
-	{
-		printf("bruh moment.");
-	}
-	else 
-	{
-		printf("game running successfully!");
-	}
-
-	do 
-	{
-		running = PolishEngine_Update();
-		printf("%i", PolishEngine_GetMouse(MOUSE_LEFT, NULL, NULL));
-		
-	} while (running);
-
-	return err;
+void render()
+{
 }
