@@ -11,7 +11,6 @@ int PolishEngine_Init(char* title, Uint16 width, Uint16 height)
 		printf("something went wrong while initiializing SDL SubSystems... %s", SDL_GetError());
 	}
 
-
 	game.window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
 
 	if (game.window == NULL)
@@ -26,7 +25,6 @@ int PolishEngine_Init(char* title, Uint16 width, Uint16 height)
 		printf("something went wrong while creating SDL Renderer... %s", SDL_GetError());
 	}
 
-
 	if ((err != 0) && (game.window != NULL) && (game.renderer != NULL))
 	{
 		return -1;
@@ -35,8 +33,8 @@ int PolishEngine_Init(char* title, Uint16 width, Uint16 height)
 	return 0;
 }
 
-// returns 1 if it will complete loop, and 0 if it quited
-int PolishEngine_Update()
+// engine related updates
+void PolishEngine_Update(int *quit, void (*update)())
 {
 	SDL_PollEvent(&game.event);
 
@@ -47,14 +45,23 @@ int PolishEngine_Update()
 			SDL_DestroyRenderer(game.renderer);
 			SDL_Quit();
 
-			return 0;
+			*quit = 1;
 			break;
 
 		default:
 			break;
 	}
 
-	return 1;
+	update();
+}
+
+// updating screen
+void PolishEngine_Render(void (* render)())
+{
+	SDL_SetRenderDrawColor(game.renderer, 0, 0, 0, 255);
+	SDL_RenderClear(game.renderer);
+	render();
+	SDL_RenderPresent(game.renderer);
 }
 
 // returns 1 if key is pressed
@@ -92,4 +99,38 @@ Uint32 PolishEngine_GetMouse(int index, int *x, int *y)
 			return 0;
 			break;
 	}
+} 
+
+// return ticks from sdl
+Uint64 PolishEngine_GetTicks()
+{
+	return SDL_GetTicks64();
+}
+
+// loads texture and returns it
+SDL_Texture* PolishEngine_LoadTexture(char* filename)
+{
+	SDL_Texture* texture;
+
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s\n", filename);
+
+	texture = IMG_LoadTexture(game.renderer, filename);
+
+	if (texture == NULL)
+	{
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Cannot load texture %s\n", filename);
+	}
+
+	return texture;
+}
+
+void PolishEngine_Blit(SDL_Texture* texture, int x, int y)
+{
+	SDL_Rect dest;
+
+	dest.x = x;
+	dest.y = y;
+	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+
+	SDL_RenderCopy(game.renderer, texture, NULL, &dest);
 }

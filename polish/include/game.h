@@ -1,5 +1,5 @@
 #pragma once
 
+void init();
 void update();
-void fixed_update();
 void render();
