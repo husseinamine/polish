@@ -16,10 +16,16 @@ struct Game
 	SDL_Event event;
 } game;
 
+typedef struct Animation
+{
+	SDL_Texture** frames;
+	char* name;
+};
+
 typedef struct AnimatedTexture
 {
-	SDL_Texture** textures;
-	char** animations;
+	struct Animation* animations;
+	char** animationNames;
 };
 
 // returns 0, if succeed or -1 if something went wrong.
@@ -46,7 +52,7 @@ SDL_Texture* PolishEngine_LoadTexture(char* filename);
 // loads animated texture with and returns an array of animated textures
 struct AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* imgfile, char* jsonfile);
 
-static SDL_Texture** _GetAnimatedTexture(struct AnimatedTexture* texture, char* animation);
+static SDL_Texture** _GetAnimation(struct AnimatedTexture* texture, char* animation);
 
 // draws static texture
 void PolishEngine_Blit(SDL_Texture* texture, int x, int y);

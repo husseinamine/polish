@@ -145,7 +145,7 @@ void PolishEngine_Blit(SDL_Texture* texture, int x, int y)
 }
 
 //TODO:COMplete this bruh 
-static SDL_Texture** _GetAnimatedTexture(struct AnimatedTexture* texture, char* animation)
+static SDL_Texture** _GetAnimation(struct AnimatedTexture* texture, char* animation)
 {
 }
 
