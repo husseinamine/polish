@@ -9,14 +9,18 @@
 #define MOUSE_MIDDLE 2
 #define MOUSE_RIGHT 3
 
-typedef struct Game 
+struct Game 
 {
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	SDL_Event event;
-};
+} game;
 
-struct Game game;
+typedef struct AnimatedTexture
+{
+	SDL_Texture** textures;
+	char** animations;
+};
 
 // returns 0, if succeed or -1 if something went wrong.
 int PolishEngine_Init(char* title, Uint16 width, Uint16 height);
@@ -39,5 +43,13 @@ Uint64 PolishEngine_GetTicks();
 // loads texture and returns it
 SDL_Texture* PolishEngine_LoadTexture(char* filename);
 
+// loads animated texture with and returns an array of animated textures
+struct AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* imgfile, char* jsonfile);
+
+static SDL_Texture** _GetAnimatedTexture(struct AnimatedTexture* texture);
+
 // draws texture
 void PolishEngine_Blit(SDL_Texture* texture, int x, int y);
+
+// draws animated texture
+void PolishEngine_BlitAnimation(struct AnimatedTexture* texture, char* animation, int x, int y);
