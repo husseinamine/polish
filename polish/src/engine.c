@@ -123,11 +123,13 @@ SDL_Texture* PolishEngine_LoadTexture(char* filename)
 
 	return texture;
 }
+
 //TODO:COMplete this bruh 
 struct AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* imgfile, char* jsonfile)
 {
 }
 
+// draws static texture
 void PolishEngine_Blit(SDL_Texture* texture, int x, int y)
 {
 	SDL_Rect dest;
@@ -142,10 +144,12 @@ void PolishEngine_Blit(SDL_Texture* texture, int x, int y)
 	SDL_RenderCopy(game.renderer, texture, NULL, &dest);
 }
 
-static SDL_Texture** _GetAnimatedTexture(struct AnimatedTexture* texture)
+//TODO:COMplete this bruh 
+static SDL_Texture** _GetAnimatedTexture(struct AnimatedTexture* texture, char* animation)
 {
 }
 
-void PolishEngine_BlitAnimation(struct AnimatedTexture* texture, char* animation, int x, int y)
+//TODO:COMplete this bruh 
+void PolishEngine_BlitAnimatedTexture(struct AnimatedTexture* texture, char* animation, int x, int y)
 {
 }

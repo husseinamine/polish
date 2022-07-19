@@ -46,10 +46,10 @@ SDL_Texture* PolishEngine_LoadTexture(char* filename);
 // loads animated texture with and returns an array of animated textures
 struct AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* imgfile, char* jsonfile);
 
-static SDL_Texture** _GetAnimatedTexture(struct AnimatedTexture* texture);
+static SDL_Texture** _GetAnimatedTexture(struct AnimatedTexture* texture, char* animation);
 
-// draws texture
+// draws static texture
 void PolishEngine_Blit(SDL_Texture* texture, int x, int y);
 
 // draws animated texture
-void PolishEngine_BlitAnimation(struct AnimatedTexture* texture, char* animation, int x, int y);
+void PolishEngine_BlitAnimatedTexture(struct AnimatedTexture* texture, char* animation, int x, int y);
