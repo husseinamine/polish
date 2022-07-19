@@ -22,10 +22,10 @@ struct Game game;
 int PolishEngine_Init(char* title, Uint16 width, Uint16 height);
 
 // engine related updates
-void PolishEngine_Update(int *quit, void (*update)());
+void PolishEngine_Update(int *quit, void (* update)(double), double deltaTime);
 
 // updating screen
-void PolishEngine_Render(void (*render)());
+void PolishEngine_Render(void (* render)());
 
 // returns 1 if key is pressed
 Uint8 PolishEngine_GetKey(const char* key);

@@ -1,18 +1,28 @@
 #include "game.h"
 #include "engine.h"
 
-SDL_Texture* player;
+struct player
+{
+	SDL_Texture* texture;
+	int x, y;
+} player;
 
 void init()
 {
-	player = PolishEngine_LoadTexture("res/player.png");
+	player.texture = PolishEngine_LoadTexture("res/player.png");
+	player.x = 0;
+	player.y = 0;
 }
 
-void update()
+void update(double deltaTime)
 {
+	if (PolishEngine_GetKey("d"))
+	{
+		player.x += 90 * deltaTime;
+	}
 }
 
 void render()
 {
-	PolishEngine_Blit(player, 0, 0);
+	PolishEngine_Blit(player.texture, player.x, player.y);
 }

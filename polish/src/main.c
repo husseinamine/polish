@@ -6,11 +6,12 @@
 int main(int argc, char* argv[])
 {
 	int quit = 0;
-	const int FPS = 60;
 	const int frameDelay = 1000 / FPS; 
 
-	Uint64 frameStart;
-	Uint64 frameTime;
+	Uint64 tickTime = 0;
+	double deltaTime = 0.000f, lastDelta = 0.000f; 
+
+	Uint64 frameStart = 0, frameTime = 0;
 
 	int err = PolishEngine_Init("Polish v0.1", 800, 600);
 
@@ -27,9 +28,13 @@ int main(int argc, char* argv[])
 
 	while (!quit)
 	{
+		tickTime = PolishEngine_GetTicks();
+		deltaTime = (((double)tickTime) * 0.001f) - lastDelta;
+		lastDelta = ((double) tickTime) * 0.001f;
+
 		frameStart = PolishEngine_GetTicks();
 
-		PolishEngine_Update(&quit, &update);
+		PolishEngine_Update(&quit, &update, deltaTime);
 		PolishEngine_Render(&render);
 
 		frameTime = PolishEngine_GetTicks() - frameStart;

@@ -34,7 +34,7 @@ int PolishEngine_Init(char* title, Uint16 width, Uint16 height)
 }
 
 // engine related updates
-void PolishEngine_Update(int *quit, void (*update)())
+void PolishEngine_Update(int *quit, void (* update)(double), double deltaTime)
 {
 	SDL_PollEvent(&game.event);
 
@@ -52,7 +52,7 @@ void PolishEngine_Update(int *quit, void (*update)())
 			break;
 	}
 
-	update();
+	update(deltaTime);
 }
 
 // updating screen
@@ -131,6 +131,9 @@ void PolishEngine_Blit(SDL_Texture* texture, int x, int y)
 	dest.x = x;
 	dest.y = y;
 	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+
+	dest.w *= 2;
+	dest.h *= 2;
 
 	SDL_RenderCopy(game.renderer, texture, NULL, &dest);
 }
