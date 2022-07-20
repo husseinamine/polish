@@ -1,9 +1,6 @@
 #pragma once
 
-#include <stdio.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_events.h>
 
 #define MOUSE_LEFT 1
 #define MOUSE_MIDDLE 2

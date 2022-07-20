@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_events.h>
+#include "parson.h"
 #include "engine.h"
 
 // returns 0, if succeed or -1 if something went wrong.
@@ -127,6 +132,12 @@ SDL_Texture* PolishEngine_LoadTexture(char* filename)
 //TODO:COMplete this bruh 
 struct AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* imgfile, char* jsonfile)
 {
+	JSON_Value* root = json_parse_file(jsonfile);
+
+	JSON_Object* rootObject = json_value_get_object(root);
+	printf(json_object_get_string(rootObject, "test"));
+
+	return NULL;
 }
 
 // draws static texture

@@ -20,6 +20,8 @@ void update(double deltaTime)
 	{
 		player.x += 90 * deltaTime;
 	}
+
+	PolishEngine_LoadAnimatedTexture("TEST", "res/data/test.json");
 }
 
 void render()

@@ -141,13 +141,18 @@
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\engine.c" />
+    <ClCompile Include="src\parson.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\engine.h" />
     <ClInclude Include="include\game.h" />
+    <ClInclude Include="include\parson.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\images\player.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\data\test.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

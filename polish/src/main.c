@@ -6,7 +6,7 @@
 int main(int argc, char* argv[])
 {
 	int quit = 0;
-	const int frameDelay = 1000 / FPS; 
+	const Uint64 frameDelay = 1000 / FPS; 
 
 	Uint64 tickTime = 0;
 	double deltaTime = 0.000f, lastDelta = 0.000f; 
