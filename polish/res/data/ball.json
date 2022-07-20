@@ -1,0 +1,22 @@
+{
+  "layout": {
+    "rows": 3,
+    "columns": 5
+  },
+  "animations": {
+    "bigBall": "1-3",
+    "smallBall": "4-5"
+  },
+  "columnSize": {
+    "w": 16,
+    "h": 16
+  },
+  "meta": {
+    "image": "res/images/ball.png",
+    "size": {
+      "w": 32,
+      "h": 54
+    },
+    "scale": 1
+  }
+}

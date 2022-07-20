@@ -144,14 +144,18 @@
     <ClCompile Include="src\parson.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\textures.h" />
     <ClInclude Include="include\engine.h" />
     <ClInclude Include="include\game.h" />
     <ClInclude Include="include\parson.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\images\ball.png" />
+    <Image Include="res\images\bg.png" />
     <Image Include="res\images\player.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\data\ball.json" />
     <None Include="res\data\test.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

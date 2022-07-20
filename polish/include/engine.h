@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include "textures.h"
 
 #define MOUSE_LEFT 1
 #define MOUSE_MIDDLE 2
@@ -12,18 +13,6 @@ struct Game
 	SDL_Renderer* renderer;
 	SDL_Event event;
 } game;
-
-typedef struct Animation
-{
-	SDL_Texture** frames;
-	char* name;
-};
-
-typedef struct AnimatedTexture
-{
-	struct Animation* animations;
-	char** animationNames;
-};
 
 // returns 0, if succeed or -1 if something went wrong.
 int PolishEngine_Init(char* title, Uint16 width, Uint16 height);
@@ -44,15 +33,13 @@ Uint32 PolishEngine_GetMouse(int index, int* x, int* y);
 Uint64 PolishEngine_GetTicks();
 
 // loads texture and returns it
-SDL_Texture* PolishEngine_LoadTexture(char* filename);
+Texture PolishEngine_LoadTexture(char* filename, int x, int y);
 
 // loads animated texture with and returns an array of animated textures
-struct AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* imgfile, char* jsonfile);
-
-static SDL_Texture** _GetAnimation(struct AnimatedTexture* texture, char* animation);
+AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* jsonfile);
 
 // draws static texture
 void PolishEngine_Blit(SDL_Texture* texture, int x, int y);
 
 // draws animated texture
-void PolishEngine_BlitAnimatedTexture(struct AnimatedTexture* texture, char* animation, int x, int y);
+void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation, int x, int y);

@@ -38,13 +38,23 @@
     <ClInclude Include="include\parson.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\textures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\images\player.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\images\bg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\images\ball.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\data\test.json" />
+    <None Include="res\data\ball.json" />
   </ItemGroup>
 </Project>

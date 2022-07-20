@@ -113,54 +113,70 @@ Uint64 PolishEngine_GetTicks()
 }
 
 // loads texture and returns it
-SDL_Texture* PolishEngine_LoadTexture(char* filename)
+Texture PolishEngine_LoadTexture(char* filename, int x, int y)
 {
-	SDL_Texture* texture;
+	SDL_Texture* sdlTexture;
 
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s\n", filename);
 
-	texture = IMG_LoadTexture(game.renderer, filename);
+	sdlTexture = IMG_LoadTexture(game.renderer, filename);
 
-	if (texture == NULL)
+	if (sdlTexture == NULL)
 	{
 		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Cannot load texture %s\n", filename);
 	}
+	else
+	{
+		SDL_Rect dest;
+		Texture texture = {
+			sdlTexture,
+			0, 0, 1,
+			x, y
+		};
+
+		SDL_QueryTexture(texture.texture, NULL, NULL, &dest.w, &dest.h);
+		texture.w = dest.w;
+		texture.h = dest.h;
+
+		return texture;
+	}
+
+	Texture texture = {
+		sdlTexture,
+		0, 0, 0,
+		0, 0
+	};
 
 	return texture;
 }
 
 //TODO:COMplete this bruh 
-struct AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* imgfile, char* jsonfile)
+AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* jsonfile)
 {
 	JSON_Value* root = json_parse_file(jsonfile);
-
 	JSON_Object* rootObject = json_value_get_object(root);
-	printf(json_object_get_string(rootObject, "test"));
+	JSON_Object* meta = json_object_get_object(rootObject, "meta");
+	int w = json_object_dotget_number(meta, "size.w");
+	printf("%d", w);
+
+	json_value_free(root);
 
 	return NULL;
 }
 
 // draws static texture
-void PolishEngine_Blit(SDL_Texture* texture, int x, int y)
+void PolishEngine_Blit(Texture* texture)
 {
-	SDL_Rect dest;
+	SDL_Rect dest = {
+		texture->x, texture->y,
+		texture->w * texture->scale, 
+		texture->h * texture->scale
+	};
 
-	dest.x = x;
-	dest.y = y;
-	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
-
-	dest.w *= 2;
-	dest.h *= 2;
-
-	SDL_RenderCopy(game.renderer, texture, NULL, &dest);
+	SDL_RenderCopy(game.renderer, texture->texture, NULL, &dest);
 }
 
 //TODO:COMplete this bruh 
-static SDL_Texture** _GetAnimation(struct AnimatedTexture* texture, char* animation)
-{
-}
-
-//TODO:COMplete this bruh 
-void PolishEngine_BlitAnimatedTexture(struct AnimatedTexture* texture, char* animation, int x, int y)
+void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation, int x, int y)
 {
 }
