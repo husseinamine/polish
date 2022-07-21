@@ -32,14 +32,14 @@ Uint32 PolishEngine_GetMouse(int index, int* x, int* y);
 // return ticks from sdl
 Uint64 PolishEngine_GetTicks();
 
-// loads texture and returns it
-Texture PolishEngine_LoadTexture(char* filename, int x, int y);
+// loads texture
+void PolishEngine_LoadTexture(Texture* texture, char* filename, int x, int y);
 
-// loads animated texture with and returns an array of animated textures
-AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* jsonfile);
+// loads animated texture
+void PolishEngine_LoadAnimatedTexture(AnimatedTexture* animatedTexture, char* jsonfile, int x, int y);
 
 // draws static texture
-void PolishEngine_Blit(SDL_Texture* texture, int x, int y);
+void PolishEngine_Blit(Texture* texture);
 
 // draws animated texture
-void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation, int x, int y);
+void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation);

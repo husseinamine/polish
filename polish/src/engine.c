@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_events.h>
@@ -112,10 +114,11 @@ Uint64 PolishEngine_GetTicks()
 	return SDL_GetTicks64();
 }
 
-// loads texture and returns it
-Texture PolishEngine_LoadTexture(char* filename, int x, int y)
+// loads texture
+void PolishEngine_LoadTexture(Texture *texture, char* filename, int x, int y)
 {
 	SDL_Texture* sdlTexture;
+	SDL_Rect dest;
 
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s\n", filename);
 
@@ -127,41 +130,68 @@ Texture PolishEngine_LoadTexture(char* filename, int x, int y)
 	}
 	else
 	{
-		SDL_Rect dest;
-		Texture texture = {
-			sdlTexture,
-			0, 0, 1,
-			x, y
-		};
+		texture->texture = sdlTexture;
+		SDL_QueryTexture(texture->texture, NULL, NULL, &dest.w, &dest.h);
 
-		SDL_QueryTexture(texture.texture, NULL, NULL, &dest.w, &dest.h);
-		texture.w = dest.w;
-		texture.h = dest.h;
-
-		return texture;
+		texture->w = dest.w;
+		texture->h = dest.h;
+		texture->scale = 1;
+		texture->x = x;
+		texture->y = y;
 	}
-
-	Texture texture = {
-		sdlTexture,
-		0, 0, 0,
-		0, 0
-	};
-
-	return texture;
 }
 
-//TODO:COMplete this bruh 
-AnimatedTexture* PolishEngine_LoadAnimatedTexture(char* jsonfile)
+// loads animated texture
+void PolishEngine_LoadAnimatedTexture(AnimatedTexture* animatedTexture, char* jsonfile, int x, int y)
 {
+	animatedTexture->x = x;
+	animatedTexture->y = y;
+
 	JSON_Value* root = json_parse_file(jsonfile);
 	JSON_Object* rootObject = json_value_get_object(root);
-	JSON_Object* meta = json_object_get_object(rootObject, "meta");
-	int w = json_object_dotget_number(meta, "size.w");
-	printf("%d", w);
+
+	JSON_Object* metaObject = json_object_get_object(rootObject, "meta");
+	char* filename = json_object_dotget_string(metaObject, "image");
+	animatedTexture->w = json_object_dotget_number(metaObject, "size.w");
+	animatedTexture->h = json_object_dotget_number(metaObject, "size.h");
+	animatedTexture->scale = json_object_get_number(metaObject, "scale");
+
+	JSON_Object* columnObject = json_object_get_object(rootObject, "columnSize");
+	animatedTexture->column.w = json_object_get_number(columnObject, "w");
+	animatedTexture->column.h = json_object_get_number(columnObject, "h");
+
+	JSON_Object* layoutObject = json_object_get_object(rootObject, "layout");
+	animatedTexture->layout.totalRows = json_object_get_number(columnObject, "totalRows");
+	animatedTexture->layout.totalColumns = json_object_get_number(columnObject, "totalColumns");
+
+	JSON_Array* animationsArray = json_object_get_array(rootObject, "animations");
+	animatedTexture->_animationsCount = json_array_get_count(animationsArray);
+	animatedTexture->animations = malloc(sizeof(Animation) * animatedTexture->_animationsCount);
+	
+	for (int i = 0; i < animatedTexture->_animationsCount; i++)
+	{
+		JSON_Object* animationObject = json_array_get_object(animationsArray, i);
+		char* _animationName = json_object_get_string(animationObject, "name");
+		int _length = sizeof(char) * (strlen(_animationName) + 1);
+		char* animationName = malloc(_length);
+
+		strcpy_s(animationName, _length, _animationName);
+
+		animatedTexture->animations[i].name = animationName;
+		animatedTexture->animations[i].from = json_object_get_number(animationObject, "from");
+		animatedTexture->animations[i].to = json_object_get_number(animationObject, "to");
+	}
+
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s\n", filename);
+
+	animatedTexture->texture = IMG_Load(filename);
+
+	if (animatedTexture->texture == NULL)
+	{
+		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Cannot load texture %s\n", filename);
+	}
 
 	json_value_free(root);
-
-	return NULL;
 }
 
 // draws static texture
@@ -177,6 +207,11 @@ void PolishEngine_Blit(Texture* texture)
 }
 
 //TODO:COMplete this bruh 
-void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation, int x, int y)
+void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 {
+	int foundAnimation = 0;
+	for (int i = 0; i < texture->_animationsCount; i++)
+	{
+		//printf("%s", *texture->animations[i].name);
+	}
 }

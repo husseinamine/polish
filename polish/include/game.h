@@ -5,3 +5,4 @@
 void init();
 void update(double deltaTime);
 void render();
+void cleanup();

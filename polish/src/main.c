@@ -44,6 +44,8 @@ int main(int argc, char* argv[])
 			SDL_Delay(frameDelay - frameTime);
 		}
 	}
+	
+	cleanup();
 
-	return err;
+	return 0;
 }
