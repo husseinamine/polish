@@ -10,16 +10,19 @@ typedef struct Column
 
 typedef struct Layout
 {
-	int totalRows;
-	int totalColumns;
+	int rows;
+	int columns;
 } Layout;
-
 
 typedef struct Animation
 {
-	char* name; // pointer to a string
-	int from;
-	int to;
+	char* name;
+
+	int fromRow;
+	int toRow;
+
+	int fromColumn;
+	int toColumn;
 } Animation;
 
 typedef struct AnimatedTexture

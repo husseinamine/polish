@@ -12,24 +12,31 @@
     "h": 16
   },
   "layout": {
-    "totalRows": 3,
-    "totalColumns": 5
+    "rows": 3,
+    "columns": 2
   },
   "animations": [
     {
       "name": "bigBall",
-      "from": 1,
-      "to": 3
+      "from": {
+        "row": 1,
+        "column": 1
+      },
+      "to": {
+        "row": 2,
+        "column": 1
+      }
     },
     {
       "name": "smallBall",
-      "from": 4,
-      "to": 5
-    },
-    {
-      "name": "monkey",
-      "from": 6,
-      "to": 8
+      "from": {
+        "row": 2,
+        "column": 2
+      },
+      "to": {
+        "row": 3,
+        "column":  1
+      }
     }
   ]
   

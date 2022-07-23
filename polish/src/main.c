@@ -35,7 +35,11 @@ int main(int argc, char* argv[])
 		frameStart = PolishEngine_GetTicks();
 
 		PolishEngine_Update(&quit, &update, deltaTime);
-		PolishEngine_Render(&render);
+
+		if (!quit)
+		{
+			PolishEngine_Render(&render);
+		}
 
 		frameTime = PolishEngine_GetTicks() - frameStart;
 
