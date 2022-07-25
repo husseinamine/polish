@@ -25,7 +25,9 @@
       "to": {
         "row": 2,
         "column": 1
-      }
+      },
+      "frames": 3,
+      "frameDuration": 100
     },
     {
       "name": "smallBall",
@@ -35,8 +37,10 @@
       },
       "to": {
         "row": 3,
-        "column":  1
-      }
+        "column": 1
+      },
+      "frames": 2,
+      "frameDuration": 100
     }
   ]
   

@@ -24,6 +24,7 @@ void update(double deltaTime)
 void render()
 {
 	PolishEngine_Blit(&backgroundImage);
+	ball.scale = 2;
 	PolishEngine_BlitAnimatedTexture(&ball, "bigBall");
 }
 

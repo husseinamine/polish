@@ -23,7 +23,23 @@ typedef struct Animation
 
 	int fromColumn;
 	int toColumn;
+
+	int frames;
 } Animation;
+
+typedef struct Animator
+{
+	int frameStart;
+	int frameNow;
+	int frameStarted; 
+	int frameCurrent; 
+	int currentRow;
+	int currentColumn;
+	SDL_Rect currentDst;
+	SDL_Rect currentSrc;
+
+	int _currentAnimation; // DO NOT MODIFY!
+} Animator;
 
 typedef struct AnimatedTexture
 {
@@ -32,8 +48,9 @@ typedef struct AnimatedTexture
 	int x, y;
 	Layout layout;
 	Column column;
+	Animator animator;
 	Animation* animations;
-	int _animationsCount; // DO NOT MODIFY!!
+	int _animationsCount; // DO NOT MODIFY!
 } AnimatedTexture;
 
 typedef struct Texture

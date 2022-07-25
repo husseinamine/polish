@@ -189,6 +189,9 @@ void PolishEngine_LoadAnimatedTexture(AnimatedTexture* animatedTexture, char* js
 		JSON_Object* toObject = json_object_get_object(animationObject, "to");
 		animatedTexture->animations[i].toRow = json_object_get_number(toObject, "row");		
 		animatedTexture->animations[i].toColumn = json_object_get_number(toObject, "column");
+
+		int frames = json_object_get_number(animationObject, "frames");
+		animatedTexture->animations[i].frames = frames;
 	}
 
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s\n", filename);
@@ -215,20 +218,10 @@ void PolishEngine_Blit(Texture* texture)
 	SDL_RenderCopy(game.renderer, texture->texture, NULL, &dest);
 }
 
-static int frameStart;
-static int frameNow;
-static int frameStarted = 0; // bool
-static int frameDone = 0; // bool
-static int frameCurrent = 0; // counter
-static int currentRow = 0;
-static int currentColumn = 0;
-static SDL_Texture* currentTexture;
-static SDL_Rect currentDst;
-static SDL_Rect currentSrc;
-
-//TODO:COMplete this bruh 
+// draws animated texture
 void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 {
+	Animator* animator = &texture->animator;
 	int foundAnimation = 0;
 	int animationIndex = 0;
 
@@ -250,69 +243,71 @@ void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 		int toColumn = texture->animations[animationIndex].toColumn;
 		int fromRow = texture->animations[animationIndex].fromRow;
 		int toRow = texture->animations[animationIndex].toRow;
+		int frames = texture->animations[animationIndex].frames;
 		Layout layout = texture->layout;
 		Column column = texture->column;
 
-		if (!frameStarted)
+		if (!(animator->_currentAnimation == animationIndex))
 		{
-			frameStarted = 1;
-			frameStart = PolishEngine_GetTicks();
+			animator->_currentAnimation = animationIndex;
+			animator->frameStarted = 0; 
+			animator->frameCurrent = 0; 
+			animator->currentColumn = -1;
+			animator->currentRow = -1;
 		}
 
-		frameNow = PolishEngine_GetTicks() - frameStart;
-
-		//printf("%d %d\n", frameNow, frameCurrent);
-
-		if (frameNow >= 100)
+		if (animator->currentColumn < 0 && animator->currentRow < 0)
 		{
-			frameStarted = 0;
+			animator->currentColumn = fromColumn - 1;
+			animator->currentRow = fromRow - 1;
+		}
 
-			if (frameCurrent < 3)
-			{
-				if (currentColumn < layout.columns)
-				{	
-					SDL_Rect src = {
-						column.w * currentColumn, column.h * currentRow,
-						column.w * texture->scale,
-						column.h * texture->scale
-					};
+		if (!animator->frameStarted)
+		{
+			animator->frameStarted = 1;
+			animator->frameStart = PolishEngine_GetTicks();
+		}
 
-					printf("w:%d\t h:%d\t x: %d\t, y %d\n", frameCurrent, currentRow, src.x, src.y);
+		animator->frameNow = PolishEngine_GetTicks() - animator->frameStart;
 
-					SDL_Rect dest = {
-						texture->x, texture->y,
-						texture->w * texture->scale,
-						texture->h * texture->scale
-					};
+		if (animator->frameNow >= 100)
+		{
+			animator->frameStarted = 0;
 
-					//SDL_RenderCopy(game.renderer, texture->texture, &src, &dest);
-					currentTexture = texture->texture;
-					currentSrc = src;
-					currentDst = dest;
+			if (animator->currentColumn < layout.columns)
+			{	
+				SDL_Rect src = {
+					column.w * animator->currentColumn, column.h * animator->currentRow,
+					column.w,
+					column.h
+				};
 
-					currentColumn++;
-					frameCurrent++;
-				}
-				else
-				{
-					currentRow++;
-					currentColumn = 0;
-				}
+				SDL_Rect dest = {
+					texture->x, texture->y,
+					texture->w * texture->scale,
+					texture->h * texture->scale
+				};
+
+				animator->currentSrc = src;
+				animator->currentDst = dest;
+
+				animator->currentColumn++;
+				animator->frameCurrent++;
 			}
-
-			if (frameCurrent > 2)
+			else
 			{
-				currentColumn = 0;
-				currentRow = 0;
+				animator->currentRow++;
+				animator->currentColumn = 0;
 			}
 		}
 
-		SDL_RenderCopy(game.renderer, texture->texture, &currentSrc, &currentDst);
-
-		if (frameCurrent > 3 - 1)
+		if (animator->frameCurrent > frames - 1)
 		{
-			frameCurrent = 0;
+			animator->currentColumn = fromColumn - 1;
+			animator->currentRow = fromRow - 1;
+			animator->frameCurrent = 0;
 		}
-		//printf("%d-%d\n", texture->animations[animationIndex].fromColumn, texture->animations[animationIndex].toRow);
 	}
+
+	SDL_RenderCopy(game.renderer, texture->texture, &animator->currentSrc, &animator->currentDst);
 }
