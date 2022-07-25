@@ -45,7 +45,6 @@ typedef struct AnimatedTexture
 	int w, h, scale;
 	int x, y;
 	Layout layout;
-	Column column;
 	Animator animator;
 	Animation* animations;
 	int _animationsCount; // DO NOT MODIFY!

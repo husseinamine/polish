@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <SDL2/SDL.h>
+#include "SDL2/SDL_thread.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_events.h>
 #include "parson.h"
@@ -159,10 +160,6 @@ void PolishEngine_LoadAnimatedTexture(AnimatedTexture* animatedTexture, char* js
 	animatedTexture->h = json_object_dotget_number(metaObject, "size.h");
 	animatedTexture->scale = json_object_get_number(metaObject, "scale");
 
-	JSON_Object* columnObject = json_object_get_object(rootObject, "columnSize");
-	animatedTexture->column.w = json_object_get_number(columnObject, "w");
-	animatedTexture->column.h = json_object_get_number(columnObject, "h");
-
 	JSON_Object* layoutObject = json_object_get_object(rootObject, "layout");
 	animatedTexture->layout.rows = json_object_get_number(layoutObject, "rows");
 	animatedTexture->layout.columns = json_object_get_number(layoutObject, "columns");
@@ -221,6 +218,8 @@ void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 	int foundAnimation = 0;
 	int animationIndex = 0;
 
+	SDL_RenderCopy(game.renderer, texture->texture, &animator->currentSrc, &animator->currentDst);
+
 	for (int i = 0; i < texture->_animationsCount; i++)
 	{
 		if (foundAnimation)
@@ -235,18 +234,18 @@ void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 
 	if (foundAnimation)
 	{
+
 		int fromColumn = texture->animations[animationIndex].fromColumn;
 		int fromRow = texture->animations[animationIndex].fromRow;
 		int frames = texture->animations[animationIndex].frames;
 		int frameDuration = texture->animations[animationIndex].frameDuration;
 		Layout layout = texture->layout;
-		Column column = texture->column;
 
 		if (!(animator->_currentAnimation == animationIndex))
 		{
 			animator->_currentAnimation = animationIndex;
-			animator->frameStarted = 0; 
-			animator->frameCurrent = 0; 
+			animator->frameStarted = 0;
+			animator->frameCurrent = 0;
 			animator->currentColumn = -1;
 			animator->currentRow = -1;
 		}
@@ -270,22 +269,7 @@ void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 			animator->frameStarted = 0;
 
 			if (animator->currentColumn < layout.columns)
-			{	
-				SDL_Rect src = {
-					column.w * animator->currentColumn, column.h * animator->currentRow,
-					column.w,
-					column.h
-				};
-
-				SDL_Rect dest = {
-					texture->x, texture->y,
-					texture->w * texture->scale,
-					texture->h * texture->scale
-				};
-
-				animator->currentSrc = src;
-				animator->currentDst = dest;
-
+			{
 				animator->currentColumn++;
 				animator->frameCurrent++;
 			}
@@ -304,5 +288,17 @@ void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 		}
 	}
 
-	SDL_RenderCopy(game.renderer, texture->texture, &animator->currentSrc, &animator->currentDst);
+	SDL_Rect src = {
+		texture->w * animator->currentColumn, texture->h * animator->currentRow,
+		texture->w,
+		texture->h
+	};
+
+	SDL_Rect dest = {
+		texture->x, texture->y,
+		texture->w * texture->scale,
+		texture->h * texture->scale
+	};
+
+	SDL_RenderCopy(game.renderer, texture->texture, &src, &dest);
 }

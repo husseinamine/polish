@@ -1,33 +1,33 @@
 {
   "meta": {
-    "image": "res/images/example.png",
+    "image": "res/images/player.png",
     "size": {
-      "w": 48,
-      "h": 32
+      "w": 18,
+      "h": 40
     },
     "scale": 1
   },
   "layout": {
-    "rows": 2,
+    "rows": 1,
     "columns": 3
   },
   "animations": [
     {
-      "name": "exampleAnimation1",
+      "name": "idle",
       "from": {
         "row": 1,
         "column": 1
       },
       "frames": 3,
-      "frameDuration": 100
+      "frameDuration": 200
     },
     {
-      "name": "exampleAnimation2",
+      "name": "walk",
       "from": {
         "row": 2,
         "column": 1
       },
-      "frames": 3,
+      "frames": 1,
       "frameDuration": 100
     }
   ]
