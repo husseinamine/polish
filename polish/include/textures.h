@@ -19,12 +19,10 @@ typedef struct Animation
 	char* name;
 
 	int fromRow;
-	int toRow;
-
 	int fromColumn;
-	int toColumn;
 
 	int frames;
+	int frameDuration;
 } Animation;
 
 typedef struct Animator

@@ -174,10 +174,10 @@ void PolishEngine_LoadAnimatedTexture(AnimatedTexture* animatedTexture, char* js
 	for (int i = 0; i < animatedTexture->_animationsCount; i++)
 	{
 		JSON_Object* animationObject = json_array_get_object(animationsArray, i);
+
 		char* _animationName = json_object_get_string(animationObject, "name");
 		int _length = sizeof(char) * (strlen(_animationName) + 1);
 		char* animationName = malloc(_length);
-
 		strcpy_s(animationName, _length, _animationName);
 
 		animatedTexture->animations[i].name = animationName;
@@ -186,12 +186,8 @@ void PolishEngine_LoadAnimatedTexture(AnimatedTexture* animatedTexture, char* js
 		animatedTexture->animations[i].fromRow = json_object_get_number(fromObject, "row");
 		animatedTexture->animations[i].fromColumn = json_object_get_number(fromObject, "column");
 
-		JSON_Object* toObject = json_object_get_object(animationObject, "to");
-		animatedTexture->animations[i].toRow = json_object_get_number(toObject, "row");		
-		animatedTexture->animations[i].toColumn = json_object_get_number(toObject, "column");
-
-		int frames = json_object_get_number(animationObject, "frames");
-		animatedTexture->animations[i].frames = frames;
+		animatedTexture->animations[i].frames = json_object_get_number(animationObject, "frames");
+		animatedTexture->animations[i].frameDuration = json_object_get_number(animationObject, "frameDuration");
 	}
 
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s\n", filename);
@@ -240,10 +236,9 @@ void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 	if (foundAnimation)
 	{
 		int fromColumn = texture->animations[animationIndex].fromColumn;
-		int toColumn = texture->animations[animationIndex].toColumn;
 		int fromRow = texture->animations[animationIndex].fromRow;
-		int toRow = texture->animations[animationIndex].toRow;
 		int frames = texture->animations[animationIndex].frames;
+		int frameDuration = texture->animations[animationIndex].frameDuration;
 		Layout layout = texture->layout;
 		Column column = texture->column;
 
@@ -270,7 +265,7 @@ void PolishEngine_BlitAnimatedTexture(AnimatedTexture* texture, char* animation)
 
 		animator->frameNow = PolishEngine_GetTicks() - animator->frameStart;
 
-		if (animator->frameNow >= 100)
+		if (animator->frameNow >= frameDuration)
 		{
 			animator->frameStarted = 0;
 

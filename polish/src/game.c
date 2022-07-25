@@ -4,21 +4,21 @@
 
 Texture backgroundImage;
 AnimatedTexture ball;
-Uint64 time;
-Uint64 timeNow;
-Uint64 timeBefore;
+
 
 void init()
 {
-	time = PolishEngine_GetTicks();
 	PolishEngine_LoadTexture(&backgroundImage, "res/images/bg.png", 0, 0);
 	PolishEngine_LoadAnimatedTexture(&ball, "res/data/ball.json", 0, 0);
+
 }
 
 void update(double deltaTime)
 {
-	timeBefore = timeNow % 100;
-	timeNow = (PolishEngine_GetTicks() - time) % 100;
+	if (PolishEngine_GetKey("w"))
+	{
+		ball.x += 3 * (deltaTime * FPS);
+	}
 }
 
 void render()
