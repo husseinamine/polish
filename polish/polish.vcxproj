@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -138,12 +138,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\entity.c" />
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\engine.c" />
     <ClCompile Include="src\parson.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\entity.h" />
     <ClInclude Include="include\textures.h" />
     <ClInclude Include="include\engine.h" />
     <ClInclude Include="include\game.h" />
