@@ -2,31 +2,21 @@
 #include "game.h"
 #include "engine.h"
 #include "entity.h"
+#include "player.h"
 
 Texture backgroundImage;
 AnimatedTexture player;
 int moving = 0;
 
-void test(void* args)
-{
-	printf("test\n");
-}
-
-void test2(void *args)
-{
-	printf("test2\n");
-}
-
 void init()
 {
 	PolishEngine_LoadTexture(&backgroundImage, "res/images/bg.png", 0, 0);
 	PolishEngine_LoadAnimatedTexture(&player, "res/data/player.json", 0, 350);
-	Entity e = CreateEntity(0, 0);
-	AddComponent(&e, &test);
-	AddComponent(&e, &test2);
 
-	e.components[0](NULL);
-	e.components[1](NULL);
+	Entity* e = CreateEntity(50, 30);
+	AddComponent(e, &playerInit);
+	AddComponent(e, &playerUpdate);
+	AddComponent(e, &playerRender);
 }
 
 void update(double deltaTime)

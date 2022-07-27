@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "engine.h"
+#include "entity.h"
 #include "game.h"
 
 int main(int argc, char* argv[])
@@ -25,6 +26,23 @@ int main(int argc, char* argv[])
 	}
 
 	init();
+	Entities _entities = GetEntities();
+	Entity** entities = _entities.entities;
+	int entities_count = _entities.entities_count;
+
+	for (int i = 0; i < entities_count; i++)
+	{
+		Entity* e = entities[i];
+
+		if (e->_components_count >= INIT_COMPONENTS_COUNT)
+		{
+			e->components[0](NULL); // init 
+		}
+		else
+		{
+			printf("please add the init, update and render components in the following order:\n0: init\n1: update\n2: render\n");
+		}
+	}
 
 	while (!quit)
 	{
@@ -36,9 +54,25 @@ int main(int argc, char* argv[])
 
 		PolishEngine_Update(&quit, &update, deltaTime);
 
-		if (!quit)
+		PolishEngine_Render(&render);
+
+		Entities _entities = GetEntities();
+		Entity** entities = _entities.entities;
+		int entities_count = _entities.entities_count;
+
+		for (int i = 0; i < entities_count; i++)
 		{
-			PolishEngine_Render(&render);
+			Entity* e = entities[i];
+
+			if (e->_components_count >= INIT_COMPONENTS_COUNT)
+			{
+				e->components[1](NULL); // update 
+				e->components[2](NULL); // render			
+			}
+			else
+			{
+				printf("please add the init, update and render components in the following order:\n0: init\n1: update\n2: render\n");
+			}
 		}
 
 		frameTime = PolishEngine_GetTicks() - frameStart;
